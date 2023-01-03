@@ -1,0 +1,43 @@
+{
+    "$schema": "https://www.krakend.io/schema/v3.json",
+    "version": 3,
+    "name": "KrakenD - API Gateway",
+    "extra_config": {
+      "plugin/http-server": {
+        "name": [
+          "static-filesystem"
+        ],
+        "static-filesystem": {
+          "prefix": "/media/assets",
+          "path": "/var/www/static"
+        }
+      }
+    },
+    "timeout": "3000ms",
+    "cache_ttl": "300s",
+    "output_encoding": "json",
+    "plugin": {
+      "pattern": ".so",
+      "folder": "/opt/krakend/plugins/"
+    },
+    "endpoints": [
+      {
+        "endpoint": "/v1/ip",
+        "method": "GET",
+        "output_encoding": "json",
+        "backend": [
+          {
+            "url_pattern": "/ip",
+            "encoding": "json",
+            "sd": "static",
+            "method": "GET",
+            "host": [
+              "http://httpbin.org"
+            ],
+            "disable_host_sanitize": false
+          }
+        ]
+      }
+    ],
+    "port": 8000
+  }
